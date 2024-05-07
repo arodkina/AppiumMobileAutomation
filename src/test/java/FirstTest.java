@@ -74,6 +74,7 @@ public class FirstTest {
 
     @Test
     public void testCheckSearchFieldTextPresent(){
+        waitForElementAndClick(By.id("org.wikipedia:id/fragment_onboarding_skip_button"), "Element is not present");
         assertElementHasText(By.xpath("//android.widget.TextView[@text='Search Wikipedia']"),"Text is not correct","Search Wikipedia");
     }
 
