@@ -4,13 +4,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.net.URL;
 
@@ -66,5 +64,22 @@ public class FirstTest {
         WebElement element = waitForElement(by, errorMessage, timeOutInSeconds);
         element.clear();
         return element;
+    }
+
+    @Test
+    public void testCheckViewCardTextPresent(){
+        waitForElementAndClick(By.id("org.wikipedia:id/fragment_onboarding_skip_button"), "Element is not present");
+        assertElementHasText(By.id("org.wikipedia:id/view_card_header_title"),"Text is not correct","Featured article");
+    }
+
+    @Test
+    public void testCheckSearchFieldTextPresent(){
+        assertElementHasText(By.xpath("//android.widget.TextView[@text='Search Wikipedia']"),"Text is not correct","Search Wikipedia");
+    }
+
+    private void assertElementHasText(By by, String errorMessage, String expectedText) {
+        WebElement element = waitForElement(by, errorMessage, 5);
+        String actualText = element.getText();
+        Assert.assertEquals(errorMessage, actualText, expectedText);
     }
 }
