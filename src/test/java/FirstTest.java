@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
     private AppiumDriver driver;
@@ -28,8 +29,10 @@ public class FirstTest {
         capabilities.setCapability("app","/Users/arodkina/Desktop/AppiumJavaMobileAutomation/AppiumMobileAutomation/apks/org.wikipedia_50467_apps.evozi.com.apk");
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+
+        waitForElementAndClick(By.id("org.wikipedia:id/fragment_onboarding_skip_button"), "Element is not present");
     }
-    
+
     @After
     public void tearDown(){
         driver.quit();
@@ -68,14 +71,27 @@ public class FirstTest {
 
     @Test
     public void testCheckViewCardTextPresent(){
-        waitForElementAndClick(By.id("org.wikipedia:id/fragment_onboarding_skip_button"), "Element is not present");
         assertElementHasText(By.id("org.wikipedia:id/view_card_header_title"),"Text is not correct","Featured article");
     }
 
     @Test
     public void testCheckSearchFieldTextPresent(){
-        waitForElementAndClick(By.id("org.wikipedia:id/fragment_onboarding_skip_button"), "Element is not present");
         assertElementHasText(By.xpath("//android.widget.TextView[@text='Search Wikipedia']"),"Text is not correct","Search Wikipedia");
+    }
+
+    @Test
+    public void testCheckCancelSearch(){
+        waitForElementAndClick(By.xpath("//android.widget.TextView[@text='Search Wikipedia']"),"Element is not clickable");
+        waitForElementAndSendKeys(By.id("org.wikipedia:id/search_src_text"), "Grass", "Text is not entered", 10);
+        waitForElements(By.id("org.wikipedia:id/page_list_item_title"), "Elements are not found", 10);
+        waitForElementAndClick(By.id("org.wikipedia:id/search_close_btn"),"Element is not clickable");
+        waitForElementNotPresent(By.id("org.wikipedia:id/page_list_item_title"),"Element is still shown", 10);
+    }
+
+    private List<WebElement> waitForElements(By by, String errorMessage, long timeOutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
+        wait.withMessage(errorMessage + "\n");
+        return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
     }
 
     private void assertElementHasText(By by, String errorMessage, String expectedText) {
