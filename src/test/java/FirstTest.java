@@ -1,9 +1,16 @@
 import io.appium.java_client.AppiumDriver;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import io.appium.java_client.android.AndroidDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.net.URL;
 
@@ -30,8 +37,34 @@ public class FirstTest {
         driver.quit();
     }
 
-    @Test
-    public void firstTest(){
-        System.out.println("first Test Run");
+    private WebElement waitForElement(By by, String errorMessage, long timeOutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
+        wait.withMessage(errorMessage +"\n");
+        return wait.until(
+                ExpectedConditions.presenceOfElementLocated(by));
+    }
+
+    private WebElement waitForElementAndClick(By by, String errorMessage){
+        WebElement element = waitForElement(by, errorMessage, 5);
+        element.click();
+        return element;
+    }
+
+    private WebElement waitForElementAndSendKeys(By by, String value, String errorMessage, long timeOutInSeconds){
+        WebElement element = waitForElement(by, errorMessage, 5);
+        element.sendKeys(value);
+        return element;
+    }
+
+    private boolean waitForElementNotPresent(By by, String errorMessage, long timeOutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
+        wait.withMessage(errorMessage +"\n");
+        return wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
+    }
+
+    private WebElement waitForElementAndClear(By by, String errorMessage, long timeOutInSeconds){
+        WebElement element = waitForElement(by, errorMessage, timeOutInSeconds);
+        element.clear();
+        return element;
     }
 }
