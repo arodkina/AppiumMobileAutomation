@@ -87,7 +87,9 @@ public class FirstTest {
     }
 
     @Test
+
     public void testCheckCancelSearch(){
+        waitForElementAndClick(By.id("org.wikipedia:id/fragment_onboarding_skip_button"), "Element is not present");
         waitForElementAndClick(By.xpath("//android.widget.TextView[@text='Search Wikipedia']"),"Element is not clickable");
         waitForElementAndSendKeys(By.id("org.wikipedia:id/search_src_text"), "Grass", "Text is not entered", 10);
         waitForElements(By.id("org.wikipedia:id/page_list_item_title"), "Elements are not found", 10);
@@ -125,6 +127,17 @@ public class FirstTest {
         waitForElementAndClick(By.id("org.wikipedia:id/acceptButton"), "Element is not clickable");
         Assert.assertTrue(driver.findElement(By.id("org.wikipedia:id/main_toolbar")).isDisplayed());
     }
+
+    @Test
+    public void testCheckTitlePresent() {
+        waitForElementAndClick(By.id("org.wikipedia:id/fragment_onboarding_skip_button"), "Element is not present");
+        waitForElementAndClick(By.xpath("//android.widget.TextView[@text='Search Wikipedia']"), "Element is not clickable");
+        waitForElementAndSendKeys(By.id("org.wikipedia:id/search_src_text"), "Appium", "Text is not entered", 10);
+        List<WebElement> searchList = waitForElements(By.id("org.wikipedia:id/page_list_item_title"), "Elements are not found", 10);
+        searchList.get(0).click();
+        assertElementPresent(By.xpath("//android.webkit.WebView[@text='Appium']"), "Element is not present");
+    }
+
 
     private void swipeOnboardingScreenToLeft(){
         swipeElementToLeft(By.id("org.wikipedia:id/scrollViewContainer"),"Cannot swipe element");
@@ -192,6 +205,14 @@ public class FirstTest {
         int amountOfElements = getAmountOfElements(by);
         if (amountOfElements > 0) {
             String defaultMessage = "An element " + by.toString() + "supposed to be not present";
+            throw new AssertionError(defaultMessage + " " + errorMessage);
+        }
+    }
+
+    private void assertElementPresent(By by, String errorMessage){
+        int amountOfElements = getAmountOfElements(by);
+        if (amountOfElements < 1) {
+            String defaultMessage = "An element " + by.toString() + "is not present";
             throw new AssertionError(defaultMessage + " " + errorMessage);
         }
     }
