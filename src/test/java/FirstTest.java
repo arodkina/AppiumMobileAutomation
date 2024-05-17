@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import io.appium.java_client.android.AndroidDriver;
@@ -32,8 +31,6 @@ public class FirstTest {
         capabilities.setCapability("app","/Users/arodkina/Desktop/AppiumJavaMobileAutomation/AppiumMobileAutomation/apks/org.wikipedia_50467_apps.evozi.com.apk");
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-
-        waitForElementAndClick(By.id("org.wikipedia:id/fragment_onboarding_skip_button"), "Element is not present");
     }
 
     @After
@@ -107,6 +104,37 @@ public class FirstTest {
         waitForElementNotPresent(By.id("org.wikipedia:id/page_list_item_title"),"Element is still shown", 10);
     }
 
+    @Test
+    public void testSwipeOnboarding(){
+        String firstTitle = getOnboardingTitle();
+        Assert.assertEquals("Wrong title is shown", "The Free Encyclopedia\n" +
+                "…in over 300 languages", firstTitle);
+
+        swipeOnboardingScreenToLeft();
+        String secondTitle = getOnboardingTitle();
+        Assert.assertEquals("Wrong title is shown", "New ways to explore", secondTitle);
+
+        swipeOnboardingScreenToLeft();
+        String thirdTitle = getOnboardingTitle();
+        Assert.assertEquals("Wrong title is shown", "Reading lists with sync", thirdTitle);
+
+        swipeOnboardingScreenToLeft();
+        String fourthTitle = getOnboardingTitle();
+        Assert.assertEquals("Wrong title is shown", "Send anonymous data", fourthTitle);
+
+        waitForElementAndClick(By.id("org.wikipedia:id/acceptButton"), "Element is not clickable");
+        Assert.assertTrue(driver.findElement(By.id("org.wikipedia:id/main_toolbar")).isDisplayed());
+    }
+
+    private void swipeOnboardingScreenToLeft(){
+        swipeElementToLeft(By.id("org.wikipedia:id/scrollViewContainer"),"Cannot swipe element");
+    }
+
+    private String getOnboardingTitle() {
+        WebElement element = waitForElement(By.id("org.wikipedia:id/primaryTextView"), "Cannot find element", 5);
+        return element.getText();
+    }
+
     protected void swipeUp(int timeOfSwipe){
         TouchAction action = new TouchAction(driver);
         Dimension size = driver.manage().window().getSize();
@@ -138,7 +166,7 @@ public class FirstTest {
         }
     }
 
-    protected void swipeElementToLeft(By by, String errorMessage){
+    protected void swipeElementToLeft(By by, String errorMessage) {
         WebElement element = waitForElement(by, errorMessage, 10);
         int left_x = element.getLocation().getX();
         int right_x = left_x + element.getSize().getWidth();
