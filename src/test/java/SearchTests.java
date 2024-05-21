@@ -5,28 +5,28 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 
 public class SearchTests extends CoreTestCase {
-    private SearchPageObject SearchPageObject;
-    private OnboardingPageObject OnboardingPageObject;
+    private SearchPageObject searchPageObject;
+    private OnboardingPageObject onboardingPageObject;
 
     protected void setUp() throws Exception {
         super.setUp();
 
-        SearchPageObject = new SearchPageObject(driver);
-        OnboardingPageObject = new OnboardingPageObject(driver);
-        OnboardingPageObject.skipOnboarding();
+        searchPageObject = new SearchPageObject(driver);
+        onboardingPageObject = new OnboardingPageObject(driver);
+        onboardingPageObject.skipOnboarding();
     }
 
     @Test
     public void testCheckSearchFieldTextPresent(){
-        SearchPageObject.assertElementHasText(By.xpath("//android.widget.TextView[@text='Search Wikipedia']"),"Text is not correct","Search Wikipedia");
+        searchPageObject.assertElementHasText(By.xpath("//android.widget.TextView[@text='Search Wikipedia']"),"Text is not correct","Search Wikipedia");
     }
 
     @Test
     public void testCheckCancelSearch(){
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.waitForSearchResults();
-        SearchPageObject.clickSearchCancelButton();
-        SearchPageObject.waitForSearchResultsToDisappear();
+        searchPageObject.initSearchInput();
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.waitForSearchResults();
+        searchPageObject.clickSearchCancelButton();
+        searchPageObject.waitForSearchResultsToDisappear();
     }
 }
