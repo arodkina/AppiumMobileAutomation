@@ -45,7 +45,7 @@ public class Platform {
         capabilities.setCapability("platformName", "Android");
         capabilities.setCapability("deviceName", "AndroidTestDevice");
         capabilities.setCapability("platformVersion", "14.0");
-        capabilities.setCapability("automationName", "Appium");
+        capabilities.setCapability("automationName", "UiAutomator2");
         capabilities.setCapability("appPackage", "org.wikipedia");
         capabilities.setCapability("appActivity", ".main.MainActivity");
         capabilities.setCapability("app", "/Users/arodkina/Desktop/AppiumMobileAutomation/apks/org.wikipedia_50467_apps.evozi.com.apk");
