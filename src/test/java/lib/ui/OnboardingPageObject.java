@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 import org.openqa.selenium.WebElement;
 
 public class OnboardingPageObject extends MainPageObject {
@@ -24,9 +25,13 @@ public class OnboardingPageObject extends MainPageObject {
         this.waitForElementAndClick(SKIP_BUTTON, "Element is not present");
     }
 
-    public String getOnboardingTitle() {
-        WebElement element = waitForElement(ONBOARDING_TITLE, "Cannot find element", 5);
-        return element.getText();
+    public String getOnboardingTitle(String locator) {
+        WebElement element = waitForElement(locator, "Cannot find element", 15);
+        if (Platform.getInstance().isAndroid()) {
+            return element.getText();
+        } else {
+            return element.getAttribute("name");
+        }
     }
 
     public void swipeOnboardingScreenToLeft(){

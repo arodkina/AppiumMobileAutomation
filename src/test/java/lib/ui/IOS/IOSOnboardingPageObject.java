@@ -18,6 +18,7 @@ public class IOSOnboardingPageObject extends OnboardingPageObject {
         SEARCH_IN_NEARLY_TEXT = "id:Search in nearly 300 languages";
         HELP_MAKE_APP_TEXT = "id:Help make the app better";
         GET_STARTED_BUTTON = "predicate:name == 'Get started' AND label == 'Get started' AND type == 'XCUIElementTypeButton'";
+        ONBOARDING_SCREEN = "xpath://XCUIElementTypeWindow/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeScrollView";
     }
 
     public IOSOnboardingPageObject(AppiumDriver driver){

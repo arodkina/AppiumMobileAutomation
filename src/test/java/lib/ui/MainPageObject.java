@@ -8,13 +8,16 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
 
+import java.util.HashMap;
 import java.util.List;
 import java.time.Duration;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class MainPageObject {
@@ -103,24 +106,28 @@ public class MainPageObject {
     protected void swipeElementToLeft(String locator, String errorMessage) {
         WebElement element = waitForElement(locator, errorMessage, 10);
         int left_x = element.getLocation().getX();
-        int right_x = left_x + element.getSize().getWidth();
-        int upper_y = element.getLocation().getY();
-        int lower_y = upper_y + element.getSize().getHeight();
-        int middle_y = (upper_y + lower_y) / 2;
+        int width = element.getSize().getWidth();
+        int middle_y = element.getLocation().getY() + element.getSize().getHeight() / 2;
 
-        TouchAction action = new TouchAction(driver);
-        action
-                .press(PointOption.point(right_x, middle_y))
-                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)));
         if (Platform.getInstance().isAndroid()) {
-            action.moveTo(PointOption.point(left_x, middle_y));
+            new TouchAction(driver)
+                    .press(PointOption.point(left_x + width - 1, middle_y))
+                    .waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)))
+                    .moveTo(PointOption.point(left_x, middle_y))
+                    .release()
+                    .perform();
         } else {
-            int offsetX = (-1 * element.getSize().getWidth());
-            action.moveTo(PointOption.point(offsetX, 0));
+            int offsetX = element.getSize().getWidth() / 2 - 10;
+
+            Actions actions = new Actions(driver);
+            actions
+                    .moveToElement(element)
+                    .clickAndHold()
+                    .moveByOffset(-offsetX * 3, 0)
+                    .release()
+                    .perform();
         }
-        action .release();
-        action.perform();
-        }
+    }
 
     public int getAmountOfElements(String locator){
         By by = this.getLocatorByString(locator);
@@ -176,6 +183,10 @@ public class MainPageObject {
 
         if (byType.equals("id")) {
             return By.id(locator);
+        }
+
+        if (byType.equals("predicate")) {
+            return MobileBy.iOSNsPredicateString(locator);
         }
 
         if (byType.equals("predicate")) {
