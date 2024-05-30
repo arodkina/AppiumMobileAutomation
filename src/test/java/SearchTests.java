@@ -1,19 +1,20 @@
 import lib.CoreTestCase;
-import lib.ui.AndroidOnboardingPageObject;
+import lib.ui.OnboardingPageObject;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class SearchTests extends CoreTestCase {
     private SearchPageObject searchPageObject;
-    private AndroidOnboardingPageObject onboardingPageObject;
+    private OnboardingPageObject onboardingPageObject;
 
     private static final String SEARCH_TEXT = "xpath://android.widget.TextView[@text='Search Wikipedia']";
 
     protected void setUp() throws Exception {
         super.setUp();
 
-        searchPageObject = new SearchPageObject(driver);
-        onboardingPageObject = new AndroidOnboardingPageObject(driver);
+        searchPageObject = SearchPageObjectFactory.get(driver);
+        onboardingPageObject = new OnboardingPageObject(driver);
         onboardingPageObject.skipOnboarding();
     }
 

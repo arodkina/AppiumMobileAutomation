@@ -1,7 +1,10 @@
 import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
-import lib.ui.AndroidOnboardingPageObject;
+import lib.ui.OnboardingPageObject;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.OnboardingPageObjectFactory;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
@@ -10,7 +13,7 @@ import java.util.List;
 public class ArticleTests extends CoreTestCase {
 
     private SearchPageObject searchPageObject;
-    private AndroidOnboardingPageObject onboardingPageObject;
+    private OnboardingPageObject onboardingPageObject;
     private ArticlePageObject articlePageObject;
 
     private static final String ARTICLE_TITLE_TEXT = "id:org.wikipedia:id/view_card_header_title";
@@ -20,9 +23,9 @@ public class ArticleTests extends CoreTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        searchPageObject = new SearchPageObject(driver);
-        onboardingPageObject = new AndroidOnboardingPageObject(driver);
-        articlePageObject = new ArticlePageObject(driver);
+        searchPageObject = SearchPageObjectFactory.get(driver);
+        onboardingPageObject = OnboardingPageObjectFactory.get(driver);
+        articlePageObject = ArticlePageObjectFactory.get(driver);
 
         onboardingPageObject.skipOnboarding();
 

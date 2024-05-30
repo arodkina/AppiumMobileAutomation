@@ -3,6 +3,7 @@ package lib.ui;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
+import lib.Platform;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -109,12 +110,17 @@ public class MainPageObject {
 
         TouchAction action = new TouchAction(driver);
         action
-                .press(PointOption.point(right_x,middle_y))
-                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)))
-                .moveTo(PointOption.point(left_x,middle_y))
-                .release()
-                .perform();
-    }
+                .press(PointOption.point(right_x, middle_y))
+                .waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)));
+        if (Platform.getInstance().isAndroid()) {
+            action.moveTo(PointOption.point(left_x, middle_y));
+        } else {
+            int offsetX = (-1 * element.getSize().getWidth());
+            action.moveTo(PointOption.point(offsetX, 0));
+        }
+        action .release();
+        action.perform();
+        }
 
     public int getAmountOfElements(String locator){
         By by = this.getLocatorByString(locator);
@@ -179,5 +185,24 @@ public class MainPageObject {
         else {
             throw new IllegalArgumentException("Cannot get type of locator. Locator: " + locator);
         }
+    }
+
+    public void swipeUpTillElementAppears(String locator, String errorMessage, int maxSwipes) {
+       int alreadySwiped = 0;
+       while (!this.isElementDisplayed(locator))
+        {
+            if (alreadySwiped > maxSwipes){
+                Assert.assertTrue(errorMessage, this.isElementDisplayed(locator));
+            }
+
+            swipeUpQuick();
+            ++alreadySwiped;
+        }
+    }
+
+    public boolean isElementDisplayed(String locator) {
+        int elementLocatedByY = this.waitForElement(locator, "Cannot find element", 10).getLocation().getY();
+        int screenSixeByY = driver.manage().window().getSize().getHeight();
+        return elementLocatedByY < screenSixeByY;
     }
 }

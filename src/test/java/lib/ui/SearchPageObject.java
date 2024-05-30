@@ -1,18 +1,18 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 
-public class SearchPageObject extends MainPageObject {
+abstract public class SearchPageObject extends MainPageObject {
 
-    private static final String SEARCH_INIT_ELEMENT = "xpath://android.widget.TextView[@text='Search Wikipedia']";
-    private static final String SEARCH_INPUT = "id:org.wikipedia:id/search_src_text";
-    private static final String SEARCH_RESULTS = "id:org.wikipedia:id/page_list_item_title";
-    private static final String CANCEL_BUTTON = "id:org.wikipedia:id/search_close_btn";
+    protected static String SEARCH_INIT_ELEMENT;
+    protected static String SEARCH_INPUT;
+    protected static String SEARCH_RESULTS;
+    protected static String SEARCH_RESULT;
+    protected static String CANCEL_BUTTON;
 
 
     public SearchPageObject(AppiumDriver driver) {
@@ -38,6 +38,10 @@ public class SearchPageObject extends MainPageObject {
 
     public void clickSearchCancelButton() {
         this.waitForElementAndClick(CANCEL_BUTTON,"Element is not clickable");
+    }
+
+    public void clickSearchResult() {
+        this.waitForElementAndClick(SEARCH_RESULT, "Element is not clickable");
     }
 
     public List<WebElement> searchArticle(String searchQuery) {
