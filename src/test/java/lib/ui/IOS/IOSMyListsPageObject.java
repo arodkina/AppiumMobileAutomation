@@ -6,7 +6,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 public class IOSMyListsPageObject extends MyListsPageObject
 {
     static {
-        ARTICLE_BY_TITLE_TPL = "xpath://XCUIElementTypeLink[contains(@name,'{TITLE}')]";
+        ARTICLE_BY_TITLE = "";
     }
 
     public IOSMyListsPageObject(RemoteWebDriver driver)
