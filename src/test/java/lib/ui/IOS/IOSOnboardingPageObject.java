@@ -1,11 +1,7 @@
 package lib.ui.IOS;
 
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileBy;
-import lib.ui.MainPageObject;
 import lib.ui.OnboardingPageObject;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class IOSOnboardingPageObject extends OnboardingPageObject {
 
@@ -21,7 +17,7 @@ public class IOSOnboardingPageObject extends OnboardingPageObject {
         ONBOARDING_SCREEN = "xpath://XCUIElementTypeWindow/XCUIElementTypeOther[2]/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeOther/XCUIElementTypeScrollView";
     }
 
-    public IOSOnboardingPageObject(AppiumDriver driver){
+    public IOSOnboardingPageObject(RemoteWebDriver driver){
         super(driver);
     }
 

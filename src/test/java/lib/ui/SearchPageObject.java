@@ -1,7 +1,8 @@
 package lib.ui;
 
-import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
 import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
@@ -15,7 +16,7 @@ abstract public class SearchPageObject extends MainPageObject {
     protected static String CANCEL_BUTTON;
 
 
-    public SearchPageObject(AppiumDriver driver) {
+    public SearchPageObject(RemoteWebDriver driver) {
         super(driver);
     }
 

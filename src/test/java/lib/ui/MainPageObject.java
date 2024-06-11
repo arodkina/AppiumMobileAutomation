@@ -3,26 +3,26 @@ package lib.ui;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.WaitOptions;
+import io.appium.java_client.touch.offset.PointOption;
 import lib.Platform;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import io.appium.java_client.touch.WaitOptions;
-import io.appium.java_client.touch.offset.PointOption;
 
-import java.util.HashMap;
-import java.util.List;
 import java.time.Duration;
-import java.util.Map;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class MainPageObject {
-    protected AppiumDriver driver;
-    public MainPageObject (AppiumDriver driver) {
+    protected RemoteWebDriver driver;
+    public MainPageObject (RemoteWebDriver driver) {
         this.driver = driver;
     }
 
@@ -72,7 +72,8 @@ public class MainPageObject {
     }
 
     public void swipeUp(int timeOfSwipe){
-        TouchAction action = new TouchAction(driver);
+        if (driver instanceof AppiumDriver) {
+        TouchAction action = new TouchAction((AppiumDriver)driver);
         Dimension size = driver.manage().window().getSize();
         int x = size.width / 2;
         int startY = (int) (size.height * 0.8);
@@ -84,6 +85,9 @@ public class MainPageObject {
                 .moveTo(PointOption.point(x, endY))
                 .release()
                 .perform();
+        } else {
+            System.out.println("Method swipeUp does nothing for platform " + Platform.getInstance().getPlatformVar());
+        }
     }
 
     protected void swipeUpQuick(){
@@ -104,13 +108,15 @@ public class MainPageObject {
     }
 
     protected void swipeElementToLeft(String locator, String errorMessage) {
-        WebElement element = waitForElement(locator, errorMessage, 10);
+
+        if (driver instanceof AppiumDriver) {
+            WebElement element = waitForElement(locator, errorMessage, 10);
         int left_x = element.getLocation().getX();
         int width = element.getSize().getWidth();
         int middle_y = element.getLocation().getY() + element.getSize().getHeight() / 2;
 
         if (Platform.getInstance().isAndroid()) {
-            new TouchAction(driver)
+            new TouchAction((AppiumDriver)driver)
                     .press(PointOption.point(left_x + width - 1, middle_y))
                     .waitAction(WaitOptions.waitOptions(Duration.ofMillis(300)))
                     .moveTo(PointOption.point(left_x, middle_y))
@@ -126,6 +132,9 @@ public class MainPageObject {
                     .moveByOffset(-offsetX * 3, 0)
                     .release()
                     .perform();
+        }
+        } else {
+            System.out.println("Method swipeUp does nothing for platform " + Platform.getInstance().getPlatformVar());
         }
     }
 
@@ -189,8 +198,8 @@ public class MainPageObject {
             return MobileBy.iOSNsPredicateString(locator);
         }
 
-        if (byType.equals("predicate")) {
-            return MobileBy.iOSNsPredicateString(locator);
+        if (byType.equals("css")) {
+            return By.cssSelector(locator);
         }
 
         else {
@@ -211,9 +220,96 @@ public class MainPageObject {
         }
     }
 
+    public void clickElementToTheRightUpperCorner(String locator, String error_message)
+    {
+        if (driver instanceof AppiumDriver) {
+            WebElement element = this.waitForElement(locator + "/..", error_message);
+            int right_x = element.getLocation().getX();
+            int upper_y = element.getLocation().getY();
+            int lower_y = upper_y + element.getSize().getHeight();
+            int middle_y = (upper_y + lower_y) / 2;
+            int width = element.getSize().getWidth();
+
+            int point_to_click_x = (right_x + width) - 3;
+            int point_to_click_y = middle_y;
+
+            TouchAction action = new TouchAction((AppiumDriver) driver);
+            action.tap(PointOption.point(point_to_click_x, point_to_click_y)).perform();
+        } else {
+            System.out.println("Method clickElementToTheRightUpperCorner() do nothing for platform " + Platform.getInstance().getPlatformVar());
+        }
+    }
+
+    public void scrollWebPageUp()
+    {
+        if (Platform.getInstance().isMobWeb()) {
+            JavascriptExecutor JSExecutor = (JavascriptExecutor) driver;
+            JSExecutor.executeScript("window.scrollBy(0,250)");
+        } else {
+            System.out.println("Method scrollWebPageUp() does nothing for platform " + Platform.getInstance().getPlatformVar());
+        }
+    }
+
+    public void scrollWebPageTillElementNotVisible(String locator, String error_message, int max_swipes)
+    {
+        int already_swiped = 0;
+
+        WebElement element = this.waitForElement(locator, error_message);
+
+        while (!this.isElementDisplayed(locator)) {
+            scrollWebPageUp();
+            ++already_swiped;
+            if (already_swiped > max_swipes){
+                Assert.assertTrue(error_message, element.isDisplayed());
+            }
+        }
+    }
+
     public boolean isElementDisplayed(String locator) {
         int elementLocatedByY = this.waitForElement(locator, "Cannot find element", 10).getLocation().getY();
+
+        if (Platform.getInstance().isMobWeb()) {
+            JavascriptExecutor JSExecutor = (JavascriptExecutor) driver;
+            Object js_result = JSExecutor.executeScript("return window.pageYOffset");
+            elementLocatedByY -= Integer.parseInt(js_result.toString());
+        }
+
         int screenSixeByY = driver.manage().window().getSize().getHeight();
         return elementLocatedByY < screenSixeByY;
+    }
+
+    public void swipeUpTillElementAppear(String locator, String error_message, int max_swipes)
+    {
+        int already_swiped = 0;
+
+        while (!this.isElementDisplayed(locator))
+        {
+            if(already_swiped > max_swipes){
+                Assert.assertTrue(error_message, this.isElementDisplayed(locator));
+            }
+
+            swipeUpQuick();
+            ++already_swiped;
+        }
+    }
+
+
+    public void tryClickElementWithFewAttempts(String locator, String error_message, int amountOfAttempts)
+    {
+        int current_attempts = 0;
+        boolean needMoreAttempts = true;
+
+        while (needMoreAttempts) {
+            try {
+                this.waitForElementAndClick(locator, error_message);
+                needMoreAttempts = false;
+            } catch (Exception e) {
+                if (current_attempts > amountOfAttempts) {
+                    this.waitForElementAndClick(locator, error_message);
+                }
+            }
+
+            ++current_attempts;
+        }
     }
 }

@@ -1,15 +1,14 @@
 package lib.ui.IOS;
 
-import io.appium.java_client.AppiumDriver;
 import lib.ui.ArticlePageObject;
-import lib.ui.SearchPageObject;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class IOSArticlePageObject extends ArticlePageObject {
 
     static {
         TITLE= "";
     }
-    public IOSArticlePageObject(AppiumDriver driver){
+    public IOSArticlePageObject(RemoteWebDriver driver){
         super(driver);
     }
 }

@@ -1,7 +1,7 @@
 package lib.ui.IOS;
 
-import io.appium.java_client.AppiumDriver;
 import lib.ui.SearchPageObject;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class IOSSearchPageObject extends SearchPageObject {
 
@@ -11,7 +11,7 @@ public class IOSSearchPageObject extends SearchPageObject {
         SEARCH_RESULT = "id:Java (programming language)";
         CANCEL_BUTTON = "predicate:name == 'Cancel' AND label == 'Cancel' AND value == 'Cancel'";
     }
-    public IOSSearchPageObject(AppiumDriver driver){
+    public IOSSearchPageObject(RemoteWebDriver driver){
         super(driver);
     }
 }

@@ -1,6 +1,9 @@
+package tests;
+
 import lib.CoreTestCase;
 import lib.ui.OnboardingPageObject;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.OnboardingPageObjectFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
@@ -14,7 +17,7 @@ public class SearchTests extends CoreTestCase {
         super.setUp();
 
         searchPageObject = SearchPageObjectFactory.get(driver);
-        onboardingPageObject = new OnboardingPageObject(driver);
+        onboardingPageObject = OnboardingPageObjectFactory.get(driver);
         onboardingPageObject.skipOnboarding();
     }
 

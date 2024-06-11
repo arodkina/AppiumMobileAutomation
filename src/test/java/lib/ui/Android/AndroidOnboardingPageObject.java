@@ -1,8 +1,7 @@
 package lib.ui.Android;
 
-import io.appium.java_client.AppiumDriver;
-import lib.ui.ArticlePageObject;
 import lib.ui.OnboardingPageObject;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class AndroidOnboardingPageObject extends OnboardingPageObject {
 
@@ -17,7 +16,7 @@ public class AndroidOnboardingPageObject extends OnboardingPageObject {
         GET_STARTED_BUTTON = "id:org.wikipedia:id/acceptButton";
 
     }
-    public AndroidOnboardingPageObject(AppiumDriver driver){
+    public AndroidOnboardingPageObject(RemoteWebDriver driver){
         super(driver);
     }
 }
