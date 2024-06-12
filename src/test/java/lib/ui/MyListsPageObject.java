@@ -1,13 +1,17 @@
 package lib.ui;
 
 import lib.Platform;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.util.List;
 
 abstract public class MyListsPageObject extends MainPageObject{
 
     protected static String
             FOLDER_BY_NAME,
             ARTICLE_BY_TITLE,
+            ARTICLES_LIST,
             REMOVE_FROM_SAVED_BUTTON;
 
     private static String getFolderXpathByName(String name_of_folder)
@@ -80,5 +84,10 @@ abstract public class MyListsPageObject extends MainPageObject{
         }
 
         this.waitForArticleToDisappearByTitle(article_title);
+    }
+
+    public int getSavedArticleCount() {
+        List<WebElement> articles = this.waitForElements(ARTICLES_LIST, "No list of articles present", 10);
+        return articles.size();
     }
 }
