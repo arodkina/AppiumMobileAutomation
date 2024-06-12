@@ -50,7 +50,7 @@ public class OnboardingTests extends CoreTestCase {
     @Test
     public void testPassOnboarding(){
 
-        if (Platform.getInstance().isAndroid()){
+        if (Platform.getInstance().isAndroid() || (Platform.getInstance().isMobWeb())){
             return;
         }
 

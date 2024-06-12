@@ -109,7 +109,7 @@ abstract public class ArticlePageObject extends MainPageObject
 
     public void removeArticleFromSavedIfItAdded()
     {
-        if (this.isElementDisplayed(OPTION_REMOVE_FROM_MY_LIST_BUTTON)) {
+        if (this.isElementPresent(OPTION_REMOVE_FROM_MY_LIST_BUTTON)) {
             this.waitForElementAndClick(
                     OPTION_REMOVE_FROM_MY_LIST_BUTTON,
                     "Cannot click button to remove an article from saved"

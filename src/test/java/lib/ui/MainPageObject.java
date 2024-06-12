@@ -278,6 +278,11 @@ public class MainPageObject {
         return elementLocatedByY < screenSixeByY;
     }
 
+    public boolean isElementPresent(String locator)
+    {
+        return getAmountOfElements(locator) > 0;
+    }
+
     public void swipeUpTillElementAppear(String locator, String error_message, int max_swipes)
     {
         int already_swiped = 0;
@@ -292,6 +297,7 @@ public class MainPageObject {
             ++already_swiped;
         }
     }
+
 
 
     public void tryClickElementWithFewAttempts(String locator, String error_message, int amountOfAttempts)
