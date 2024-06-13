@@ -22,7 +22,7 @@ public class ArticleTests extends CoreTestCase {
     private static final String INPUT_ARTICLE_TITLE = "Appium";
     private static final String LOCATOR_PATTERN = String.format("xpath://android.widget.TextView[@text='%s']", INPUT_ARTICLE_TITLE);
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         searchPageObject = SearchPageObjectFactory.get(driver);

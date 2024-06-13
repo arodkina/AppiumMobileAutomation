@@ -13,7 +13,7 @@ public class SearchTests extends CoreTestCase {
 
     private static final String SEARCH_TEXT = "xpath://android.widget.TextView[@text='Search Wikipedia']";
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         searchPageObject = SearchPageObjectFactory.get(driver);

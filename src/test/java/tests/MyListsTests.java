@@ -7,6 +7,7 @@ import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.MyListsPageObjectFactory;
 import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class MyListsTests extends CoreTestCase {
@@ -15,6 +16,10 @@ public class MyListsTests extends CoreTestCase {
     private static final String
             login = "arodkina",
             password = "qwerty6!";
+
+    public void setUp() throws Exception {
+        super.setUp();
+    }
 
 
     @Test
@@ -44,7 +49,7 @@ public class MyListsTests extends CoreTestCase {
 
             ArticlePageObject.waitForTitleElement();
 
-            assertEquals(
+            Assert.assertEquals(
                     "We back not to the same page after login.",
                     first_article_title,
                     ArticlePageObject.getArticleTitle()
@@ -83,7 +88,7 @@ public class MyListsTests extends CoreTestCase {
         MyListsPageObject.swipeByArticleToDelete(first_article_title);
         int article_count_after_deletion = MyListsPageObject.getSavedArticleCount();
 
-        assertEquals(
+        Assert.assertEquals(
                 "The number of saved articles is not as expected after deletion.",
                 initial_article_count - 1,
                 article_count_after_deletion

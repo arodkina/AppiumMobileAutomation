@@ -5,6 +5,7 @@ import lib.Platform;
 import lib.ui.MainPageObject;
 import lib.ui.OnboardingPageObject;
 import lib.ui.factories.OnboardingPageObjectFactory;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static lib.ui.OnboardingPageObject.*;
@@ -13,7 +14,7 @@ public class OnboardingTests extends CoreTestCase {
     private OnboardingPageObject onboardingPageObject;
     private static final String WIKI_LOGO = "id:org.wikipedia:id/main_toolbar_wordmark";
 
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
 
         onboardingPageObject = OnboardingPageObjectFactory.get(driver);
@@ -24,23 +25,23 @@ public class OnboardingTests extends CoreTestCase {
         String firstTitle = onboardingPageObject.getOnboardingTitle(ONBOARDING_TITLE);
 
         if (Platform.getInstance().isAndroid()) {
-            assertEquals("Wrong title is shown", "The Free Encyclopedia\n" +
+            Assert.assertEquals("Wrong title is shown", "The Free Encyclopedia\n" +
                     "…in over 300 languages", firstTitle);
         } else {
-            assertEquals("Wrong title is shown", "The free encyclopedia", firstTitle);
+            Assert.assertEquals("Wrong title is shown", "The free encyclopedia", firstTitle);
         }
 
         onboardingPageObject.swipeOnboardingScreenToLeft();
         String secondTitle = onboardingPageObject.getOnboardingTitle(NEW_WAYS_TEXT);
-        assertEquals("Wrong title is shown", "New ways to explore", secondTitle);
+        Assert.assertEquals("Wrong title is shown", "New ways to explore", secondTitle);
 
         onboardingPageObject.swipeOnboardingScreenToLeft();
         String thirdTitle = onboardingPageObject.getOnboardingTitle(SEARCH_IN_NEARLY_TEXT);
-        assertEquals("Wrong title is shown", "Reading lists with sync", thirdTitle);
+        Assert.assertEquals("Wrong title is shown", "Reading lists with sync", thirdTitle);
 
         onboardingPageObject.swipeOnboardingScreenToLeft();
         String fourthTitle = onboardingPageObject.getOnboardingTitle(HELP_MAKE_APP_TEXT);
-        assertEquals("Wrong title is shown", "Send anonymous data", fourthTitle);
+        Assert.assertEquals("Wrong title is shown", "Send anonymous data", fourthTitle);
 
         onboardingPageObject.waitForElementAndClick(GET_STARTED_BUTTON, "Element is not clickable");
         MainPageObject mainPageObject = new MainPageObject(driver);

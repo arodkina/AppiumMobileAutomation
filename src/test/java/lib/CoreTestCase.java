@@ -2,30 +2,30 @@ package lib;
 
 import io.appium.java_client.AppiumDriver;
 import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.time.Duration;
 
-public class CoreTestCase extends TestCase{
+public class CoreTestCase {
     protected RemoteWebDriver driver;
     private static String URL= "http://127.0.0.1:4723/";
     private static String IOS_PLATFORM = "ios";
     private static String ANDROID_PLATFORM = "android";
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
 
-        super.setUp();
         driver = Platform.getInstance().getDriver();
         this.rotateScreenPortrait();
         this.openWikiPageMobileWeb();
     }
 
-    @Override
-    public void tearDown() throws Exception {
+    @After
+    public void tearDown() {
         driver.quit();
-        super.tearDown();
     }
 
     protected void rotateScreenPortrait(){
