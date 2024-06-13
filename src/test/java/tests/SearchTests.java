@@ -1,5 +1,7 @@
 package tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import lib.CoreTestCase;
 import lib.ui.OnboardingPageObject;
 import lib.ui.SearchPageObject;
@@ -22,11 +24,21 @@ public class SearchTests extends CoreTestCase {
     }
 
     @Test
+    @Epic("Tests for Search")
+    @Features(value = {@Feature(value="Search")})
+    @DisplayName("Check that search field text is displayed")
+    @Step("Starting test testCheckSearchFieldTextPresent")
+    @Severity(value = SeverityLevel.MINOR)
     public void testCheckSearchFieldTextPresent(){
         searchPageObject.assertElementHasText(SEARCH_TEXT,"Text is not correct","Search Wikipedia");
     }
 
     @Test
+    @Epic("Tests for Search")
+    @Features(value = {@Feature(value="Search")})
+    @DisplayName("Check that searching can be cancelled")
+    @Step("Starting test testCheckCancelSearch")
+    @Severity(value = SeverityLevel.MINOR)
     public void testCheckCancelSearch(){
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");

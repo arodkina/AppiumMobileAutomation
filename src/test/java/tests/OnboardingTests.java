@@ -1,5 +1,7 @@
 package tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.MainPageObject;
@@ -21,6 +23,11 @@ public class OnboardingTests extends CoreTestCase {
     }
 
     @Test
+    @Epic("Tests for Onboarding")
+    @Features(value = {@Feature(value="Onboarding")})
+    @DisplayName("Swipe onboarding screens")
+    @Step("Starting test testSwipeOnboarding")
+    @Severity(value = SeverityLevel.NORMAL)
     public void testSwipeOnboarding(){
         String firstTitle = onboardingPageObject.getOnboardingTitle(ONBOARDING_TITLE);
 
@@ -49,6 +56,11 @@ public class OnboardingTests extends CoreTestCase {
     }
 
     @Test
+    @Epic("Tests for Onboarding")
+    @Features(value = {@Feature(value="Onboarding")})
+    @DisplayName("Passing onboarding screens")
+    @Step("Starting test testPassOnboarding")
+    @Severity(value = SeverityLevel.NORMAL)
     public void testPassOnboarding(){
 
         if (Platform.getInstance().isAndroid() || (Platform.getInstance().isMobWeb())){

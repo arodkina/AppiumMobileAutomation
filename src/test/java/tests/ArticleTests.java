@@ -1,5 +1,7 @@
 package tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
 import lib.ui.OnboardingPageObject;
@@ -34,11 +36,21 @@ public class ArticleTests extends CoreTestCase {
     }
 
     @Test
+    @Epic("Tests for articles")
+    @Features(value = {@Feature(value="Search"), @Feature(value="Articles")})
+    @DisplayName("Check that article title is correct")
+    @Step("Starting test testCheckViewCardTextPresent")
+    @Severity(value = SeverityLevel.CRITICAL)
     public void testCheckViewCardTextPresent(){
         articlePageObject.assertElementHasText(ARTICLE_TITLE_TEXT,"Text is not correct","Featured article");
     }
 
     @Test
+    @Epic("Tests for articles")
+    @Features(value = {@Feature(value="Search"),  @Feature(value="Articles")})
+    @DisplayName("Check that article title is displayed")
+    @Step("Starting test testCheckTitlePresent")
+    @Severity(value = SeverityLevel.CRITICAL)
     public void testCheckTitlePresent() {
         List<WebElement> searchList = searchPageObject.searchArticle(INPUT_ARTICLE_TITLE);
         searchList.get(0).click();

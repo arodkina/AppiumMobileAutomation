@@ -1,5 +1,6 @@
 package lib.ui;
 
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -27,9 +28,11 @@ abstract public class ArticlePageObject extends MainPageObject
         return this.waitForElement(TITLE, "Cannot find article title on page!", 15);
     }
 
+    @Step("Get Article title")
     public String getArticleTitle()
     {
         WebElement title_element = waitForTitleElement();
+        screenshot(this.takeScreenshot("article_title"));
         if (Platform.getInstance().isAndroid()){
             return title_element.getAttribute("text");
         } else if (Platform.getInstance().isIOS()) {
@@ -62,6 +65,7 @@ abstract public class ArticlePageObject extends MainPageObject
         }
     }
 
+    @Step("Add Article to my lists")
     public void addArticleToMyList(String name_of_folder)
     {
         this.waitForElementAndClick(
@@ -107,6 +111,7 @@ abstract public class ArticlePageObject extends MainPageObject
         this.waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find option to add article to reading list");
     }
 
+    @Step("Remove Article from saved")
     public void removeArticleFromSavedIfItAdded()
     {
         if (this.isElementPresent(OPTION_REMOVE_FROM_MY_LIST_BUTTON)) {
@@ -121,6 +126,7 @@ abstract public class ArticlePageObject extends MainPageObject
         }
     }
 
+    @Step("Close article")
     public void closeArticle()
     {
         if (Platform.getInstance().isIOS() || Platform.getInstance().isAndroid()) {

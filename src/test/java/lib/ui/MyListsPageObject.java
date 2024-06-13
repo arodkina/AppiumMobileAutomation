@@ -1,5 +1,6 @@
 package lib.ui;
 
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -34,6 +35,7 @@ abstract public class MyListsPageObject extends MainPageObject{
         super(driver);
     }
 
+    @Step("Opening folder")
     public void openFolderByName(String name_of_folder)
     {
         String folder_name_xpath = getSavedAricleXpathByTitle(name_of_folder);
@@ -44,6 +46,7 @@ abstract public class MyListsPageObject extends MainPageObject{
 
     }
 
+    @Step("Waiting article")
     public void waitForArticleToAppearByTitle(String article_title)
     {
         String article_xpath = getSavedAricleXpathByTitle(article_title);
@@ -51,12 +54,14 @@ abstract public class MyListsPageObject extends MainPageObject{
     }
 
 
+    @Step("Waiting article to disappear")
     public void waitForArticleToDisappearByTitle(String article_title)
     {
         String article_xpath = getSavedAricleXpathByTitle(article_title);
         this.waitForElementNotPresent(article_xpath, "Saved article still present with title " + article_title, 15);
     }
 
+    @Step("Delete article")
     public void swipeByArticleToDelete(String article_title)
     {
         this.waitForArticleToAppearByTitle(article_title);

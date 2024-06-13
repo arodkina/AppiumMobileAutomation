@@ -1,5 +1,7 @@
 package tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.*;
@@ -17,12 +19,14 @@ public class MyListsTests extends CoreTestCase {
             login = "arodkina",
             password = "qwerty6!";
 
-    public void setUp() throws Exception {
-        super.setUp();
-    }
-
 
     @Test
+    @Epic("Tests for my lists ")
+    @Features(value = {@Feature(value="Search"), @Feature(value="Authorization"),  @Feature(value="Articles"),  @Feature(value="My Lists")})
+    @DisplayName("Check removing article from my List")
+    @Description("Safe two articles to my List and then remove one")
+    @Step("Starting test testSaveAndDeleteOneArticleFromMyList")
+    @Severity(value = SeverityLevel.BLOCKER)
     public void testSaveAndDeleteOneArticleFromMyList()
     {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
@@ -87,6 +91,8 @@ public class MyListsTests extends CoreTestCase {
         int initial_article_count = MyListsPageObject.getSavedArticleCount();
         MyListsPageObject.swipeByArticleToDelete(first_article_title);
         int article_count_after_deletion = MyListsPageObject.getSavedArticleCount();
+
+        MyListsPageObject.takeScreenshot("articles");
 
         Assert.assertEquals(
                 "The number of saved articles is not as expected after deletion.",
